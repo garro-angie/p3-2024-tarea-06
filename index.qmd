@@ -1,3 +1,62 @@
+# Replicando gráficos de Plotly
+
+1. Utilice este Notebook para replicar cualquiera de los gráficos financieros de la guía de Plotly (Ver 👉 aquí)
+
 ```{python}
-1 + 1
+import plotly.graph_objects as go
+import pandas as pd
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
+
+fig = go.Figure(data=[go.Candlestick(
+    x=df['Date'],
+    open=df['AAPL.Open'], high=df['AAPL.High'],
+    low=df['AAPL.Low'], close=df['AAPL.Close'],
+    increasing_line_color= 'rgba(255, 194, 209, 1)', decreasing_line_color= 'rgba(251, 111, 146, 1)'
+)])
+
+fig.show()
+```
+
+2. Trate de ver e interpretar los datos del DataFrame. Utlice las funciones que hemos visto en clase, por ejemplo: min, max, mean, median, quantile, corrobore los datos con la función describe.
+
+
+```{python}
+df['AAPL.Volume'].min
+df['AAPL.Volume'].max
+df['AAPL.Volume'].mean
+df['AAPL.Volume'].median
+df['AAPL.Volume'].quantile([.05, .25, .50, .75])
+```
+
+3. Con los datos de los ejemplos en plotly (es decir, alguno de los DataFrame), trate de crear:
+    a. Un gráfico de caja.
+    b. Un gráfico de histograma.
+    c. Trate de utiliza la función pandas.cut para crear 10 segmentos o contenedores (use la propiedad bin).
+
+a.
+```{python}
+import plotly.graph_objects as go
+import pandas as pd
+
+df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv')
+
+fig = go.Figure(data=[go.Box(y=df['AAPL.Volume'], name='AAPL Volume', marker=dict(color='rgba(251, 111, 146, 1)'))])
+fig.show()
+```
+
+b.
+
+```{python}
+fig = go.Figure(data=[go.Histogram(y=df['AAPL.Volume'], name='AAPL Volume', marker=dict(color='rgba(251, 111, 146, 1)'))])
+fig.show()
+```
+
+c.
+
+```{python}
+import pandas as pd
+
+bins = pd.cut(df['AAPL.Volume'], 10)
+bins.value_counts(sort=False)
 ```
